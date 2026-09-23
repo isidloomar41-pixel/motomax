@@ -1,11 +1,12 @@
 <?php
 header('Content-Type: text/html; charset=utf-8');
 
-$host = 'localhost';
-$port = '5432';
-$dbname = 'db_mi_sitio_web';
-$user = 'usuario_sitio';
-$password = 'Omar2005'; // CAMBIA ESTO
+// Conexi贸n a la base de datos
+$host = getenv('PGHOST') ?: 'dpg-dapl2ns9v7es739087fg-a';
+$port = getenv('PGPORT') ?: '5432';
+$dbname = getenv('PGDATABASE') ?: 'db_mi_sitio_web';
+$user = getenv('PGUSER') ?: 'usuario_sitio';
+$password = getenv('PGPASSWORD') ?: 't8E11W1Pqb5hFwoLkzdZOXHzirB7cwbt';
 
 try {
     $pdo = new PDO("pgsql:host=$host;port=$port;dbname=$dbname", $user, $password);
@@ -53,7 +54,7 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administraci髇 - MotoMax</title>
+    <title>Administraci贸n - MotoMax</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -171,9 +172,9 @@ try {
 
     <div class="container">
         <a href="index.php" class="back">? Volver al sitio</a>
-        <h1>Panel de Administraci髇</h1>
+        <h1>Panel de Administraci贸n</h1>
         
-        <!-- ESTAD蚐TICAS -->
+        <!-- ESTAD脥STICAS -->
         <div class="stats">
             <div class="stat-card">
                 <div class="stat-number"><?= $total_motos ?></div>
@@ -193,7 +194,7 @@ try {
         <div class="section">
             <h2>Ventas de Motos</h2>
             <?php if (empty($ventas_motos)): ?>
-                <p style="color: #888;">No hay ventas registradas a鷑.</p>
+                <p style="color: #888;">No hay ventas registradas a煤n.</p>
             <?php else: ?>
             <table>
                 <thead>
@@ -201,7 +202,7 @@ try {
                         <th>ID</th>
                         <th>Moto</th>
                         <th>Cliente</th>
-                        <th>Tel閒ono</th>
+                        <th>Tel茅fono</th>
                         <th>Email</th>
                         <th>Pago</th>
                         <th>Fecha</th>
@@ -230,16 +231,16 @@ try {
         <div class="section">
             <h2>Ventas de Refacciones</h2>
             <?php if (empty($ventas_refacciones)): ?>
-                <p style="color: #888;">No hay ventas registradas a鷑.</p>
+                <p style="color: #888;">No hay ventas registradas a煤n.</p>
             <?php else: ?>
             <table>
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Refacci髇</th>
+                        <th>Refacci贸n</th>
                         <th>Cantidad</th>
                         <th>Cliente</th>
-                        <th>Tel閒ono</th>
+                        <th>Tel茅fono</th>
                         <th>Total</th>
                         <th>Fecha</th>
                     </tr>
@@ -265,7 +266,7 @@ try {
         <div class="section">
             <h2>Citas del Taller</h2>
             <?php if (empty($citas)): ?>
-                <p style="color: #888;">No hay citas agendadas a鷑.</p>
+                <p style="color: #888;">No hay citas agendadas a煤n.</p>
             <?php else: ?>
             <table>
                 <thead>
@@ -273,7 +274,7 @@ try {
                         <th>ID</th>
                         <th>Servicio</th>
                         <th>Cliente</th>
-                        <th>Tel閒ono</th>
+                        <th>Tel茅fono</th>
                         <th>Moto</th>
                         <th>Fecha</th>
                         <th>Hora</th>
