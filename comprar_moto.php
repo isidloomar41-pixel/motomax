@@ -1,11 +1,12 @@
 <?php
 header('Content-Type: text/html; charset=utf-8');
 
-$host = 'localhost';
-$port = '5432';
-$dbname = 'db_mi_sitio_web';
-$user = 'usuario_sitio';
-$password = 'Omar2005'; // CAMBIA ESTO
+// Conexi√≥n a la base de datos
+$host = getenv('PGHOST') ?: 'dpg-dapl2ns9v7es739087fg-a';
+$port = getenv('PGPORT') ?: '5432';
+$dbname = getenv('PGDATABASE') ?: 'db_mi_sitio_web';
+$user = getenv('PGUSER') ?: 'usuario_sitio';
+$password = getenv('PGPASSWORD') ?: 't8E11W1Pqb5hFwoLkzdZOXHzirB7cwbt';
 
 try {
     $pdo = new PDO("pgsql:host=$host;port=$port;dbname=$dbname", $user, $password);
@@ -43,7 +44,7 @@ try {
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$moto_id, $nombre, $telefono, $email, $forma_pago]);
         
-        $mensaje = "? °Compra registrada exitosamente! Nos pondremos en contacto contigo pronto.";
+        $mensaje = "? ¬°Compra registrada exitosamente! Nos pondremos en contacto contigo pronto.";
         
         // Actualizar stock
         $pdo->prepare("UPDATE motos SET stock = stock - 1 WHERE id = ?")->execute([$moto_id]);
@@ -179,8 +180,8 @@ try {
         
         <div class="moto-info">
             <h2><?= htmlspecialchars($moto['marca']) ?> <?= htmlspecialchars($moto['modelo']) ?></h2>
-            <p>CategorÌa: <?= htmlspecialchars($moto['categoria']) ?></p>
-            <p>AÒo: <?= $moto['anio'] ?> | Cilindrada: <?= $moto['cilindrada'] ?>cc</p>
+            <p>Categor√≠a: <?= htmlspecialchars($moto['categoria']) ?></p>
+            <p>A√±o: <?= $moto['anio'] ?> | Cilindrada: <?= $moto['cilindrada'] ?>cc</p>
             <p>Color: <?= htmlspecialchars($moto['color']) ?></p>
             <div class="precio">$<?= number_format($moto['precio'], 2) ?></div>
         </div>
@@ -192,12 +193,12 @@ try {
             </div>
             
             <div class="form-group">
-                <label for="telefono">TelÈfono *</label>
+                <label for="telefono">Tel√©fono *</label>
                 <input type="tel" id="telefono" name="telefono" required>
             </div>
             
             <div class="form-group">
-                <label for="email">Correo electrÛnico *</label>
+                <label for="email">Correo electr√≥nico *</label>
                 <input type="email" id="email" name="email" required>
             </div>
             
@@ -206,8 +207,8 @@ try {
                 <select id="forma_pago" name="forma_pago" required>
                     <option value="">Seleccione...</option>
                     <option value="Contado">Contado</option>
-                    <option value="Tarjeta de CrÈdito">Tarjeta de CrÈdito</option>
-                    <option value="Tarjeta de DÈbito">Tarjeta de DÈbito</option>
+                    <option value="Tarjeta de Cr√©dito">Tarjeta de Cr√©dito</option>
+                    <option value="Tarjeta de D√©bito">Tarjeta de D√©bito</option>
                     <option value="Financiamiento">Financiamiento</option>
                 </select>
             </div>
@@ -215,7 +216,7 @@ try {
             <button type="submit" class="btn">Confirmar Compra</button>
         </form>
         
-        <a href="index.php" class="back">? Volver al cat·logo</a>
+        <a href="index.php" class="back">? Volver al cat√°logo</a>
         <?php endif; ?>
     </div>
 </body>
