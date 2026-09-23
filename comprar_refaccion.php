@@ -1,10 +1,7 @@
 <?php
 header('Content-Type: text/html; charset=utf-8');
 
-// Conexión a la base de datos usando URL completa
-$db_url = 'postgresql://usuario_sitio:t8E11W1Pqb5hFwoLkzdZOXHzirB7cwbt@dpg-dapl2ns9v7es739087fg-a:5432/db_mi_sitio_web';
-
-// Parsear la URL
+$db_url = 'postgresql://usuario_sitio:t8E11W1Pqb5hFwoLkzdZOXHzirB7cwbt@dpg-dapl2ns9v7es739087fg-a.oregon-postgres.render.com:5432/db_mi_sitio_web';
 $parts = parse_url($db_url);
 $host = $parts['host'];
 $port = $parts['port'] ?? '5432';
@@ -34,14 +31,11 @@ try {
         $cantidad = $_POST['cantidad'];
         $total = $refaccion['precio'] * $cantidad;
         
-        $sql = "INSERT INTO ventas_refacciones (refaccion_id, cantidad, cliente_nombre, cliente_telefono, total) 
-                VALUES (?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO ventas_refacciones (refaccion_id, cantidad, cliente_nombre, cliente_telefono, total) VALUES (?, ?, ?, ?, ?)";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$refaccion_id, $cantidad, $nombre, $telefono, $total]);
         
-        $mensaje = "? ¡Compra de refacción registrada! Total: $" . number_format($total, 2);
-        
-        $pdo->prepare("UPDATE refacciones SET stock = stock - ? WHERE id = ?")->execute([$cantidad, $refaccion_id]);
+        $mensaje = "Compra registrada exitosamente. Te contactaremos para coordinar la entrega.";
     }
     
 } catch (PDOException $e) {
@@ -52,14 +46,12 @@ try {
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Comprar <?= htmlspecialchars($refaccion['nombre']) ?> - MotoMax</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprar Refacción - <?= htmlspecialchars($refaccion['nombre']) ?> - MotoMax</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background: #0d0d0d;
-            color: #fff;
-        }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #0d0d0d; color: #fff; }
+        
         header {
             background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
             padding: 20px 50px;
@@ -67,6 +59,7 @@ try {
         }
         .logo { font-size: 28px; font-weight: bold; color: #e63946; }
         .logo span { color: #fff; }
+        
         .container {
             max-width: 600px;
             margin: 50px auto;
@@ -74,18 +67,23 @@ try {
             background: #1a1a1a;
             border-radius: 10px;
         }
+        
         h1 { color: #e63946; margin-bottom: 20px; }
-        .producto {
+        
+        .refaccion-info {
             background: #2d2d2d;
-            padding: 20px;
+            padding: 25px;
             border-radius: 8px;
             margin-bottom: 30px;
         }
-        .precio { font-size: 28px; font-weight: bold; color: #e63946; margin: 15px 0; }
+        .refaccion-info h2 { color: #fff; margin-bottom: 15px; }
+        .refaccion-info p { color: #ccc; margin-bottom: 8px; }
+        .precio { font-size: 32px; font-weight: bold; color: #e63946; margin: 20px 0; }
+        
         form { display: flex; flex-direction: column; gap: 20px; }
         .form-group { display: flex; flex-direction: column; }
-        label { margin-bottom: 8px; }
-        input {
+        label { margin-bottom: 8px; color: #ccc; }
+        input, select {
             padding: 12px;
             border: 1px solid #444;
             border-radius: 5px;
@@ -102,6 +100,7 @@ try {
             cursor: pointer;
         }
         .btn:hover { background: #c1121f; }
+        
         .mensaje {
             background: #27ae60;
             padding: 20px;
@@ -118,19 +117,25 @@ try {
     </style>
 </head>
 <body>
-    <header><div class="logo">Moto<span>Max</span></div></header>
+    <header>
+        <div class="logo">Moto<span>Max</span></div>
+    </header>
+    
     <div class="container">
-        <h1>?? Comprar Refacción</h1>
+        <h1>Comprar Refacción</h1>
+        
         <?php if ($mensaje): ?>
             <div class="mensaje"><?= $mensaje ?></div>
-            <a href="index.php" class="back">? Volver</a>
+            <a href="index.php" class="back">Volver al inicio</a>
         <?php else: ?>
-        <div class="producto">
+        <div class="refaccion-info">
             <h2><?= htmlspecialchars($refaccion['nombre']) ?></h2>
             <p><?= htmlspecialchars($refaccion['descripcion']) ?></p>
+            <p>Categoría: <?= htmlspecialchars($refaccion['categoria']) ?></p>
+            <p>Stock disponible: <?= $refaccion['stock'] ?> unidades</p>
             <div class="precio">$<?= number_format($refaccion['precio'], 2) ?></div>
-            <p>Stock disponible: <?= $refaccion['stock'] ?></p>
         </div>
+        
         <form method="POST">
             <div class="form-group">
                 <label>Nombre completo *</label>
@@ -144,9 +149,9 @@ try {
                 <label>Cantidad *</label>
                 <input type="number" name="cantidad" min="1" max="<?= $refaccion['stock'] ?>" value="1" required>
             </div>
-            <button type="submit" class="btn">Comprar</button>
+            <button type="submit" class="btn">Confirmar Compra</button>
         </form>
-        <a href="index.php" class="back">? Volver</a>
+        <a href="index.php" class="back">Volver</a>
         <?php endif; ?>
     </div>
 </body>
