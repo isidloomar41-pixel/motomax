@@ -1,12 +1,11 @@
 <?php
 header('Content-Type: text/html; charset=utf-8');
 // Conexión a la base de datos
-// Conexión a la base de datos
-$host = getenv('PGHOST') ?: 'dpg-dapl2ns9v7es739087fg-a';
-$port = getenv('PGPORT') ?: '5432';
-$dbname = getenv('PGDATABASE') ?: 'db_mi_sitio_web';
-$user = getenv('PGUSER') ?: 'usuario_sitio';
-$password = getenv('PGPASSWORD') ?: 't8E11W1Pqb5hFwoLkzdZOXHzirB7cwbt';
+$host = 'dpg-dapl2ns9v7es739087fg-a.ondigitalocean.com';
+$port = '5432';
+$dbname = 'db_mi_sitio_web';
+$user = 'usuario_sitio';
+$password = 't8E11W1Pqb5hFwoLkzdZOXHzirB7cwbt';
 
 try {
     $pdo = new PDO("pgsql:host=$host;port=$port;dbname=$dbname", $user, $password);
