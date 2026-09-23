@@ -1,17 +1,18 @@
 <?php
 header('Content-Type: text/html; charset=utf-8');
-// ConexiÛn a la base de datos
-$host = 'localhost';
-$port = '5432';
-$dbname = 'db_mi_sitio_web';
-$user = 'usuario_sitio';
-$password = 'Omar2005'; // ? CAMBIA ESTO por tu contraseÒa real
+// Conexi√≥n a la base de datos
+// Conexi√≥n a la base de datos
+$host = getenv('PGHOST') ?: 'dpg-dapl2ns9v7es739087fg-a';
+$port = getenv('PGPORT') ?: '5432';
+$dbname = getenv('PGDATABASE') ?: 'db_mi_sitio_web';
+$user = getenv('PGUSER') ?: 'usuario_sitio';
+$password = getenv('PGPASSWORD') ?: 't8E11W1Pqb5hFwoLkzdZOXHzirB7cwbt';
 
 try {
     $pdo = new PDO("pgsql:host=$host;port=$port;dbname=$dbname", $user, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
-    // Obtener motos con sus marcas y categorÌas
+    // Obtener motos con sus marcas y categor√≠as
     $stmt = $pdo->query("
         SELECT m.*, ma.nombre AS marca, c.nombre AS categoria 
         FROM motos m 
@@ -30,7 +31,7 @@ try {
     $servicios = $stmt3->fetchAll(PDO::FETCH_ASSOC);
     
 } catch (PDOException $e) {
-    die("Error de conexiÛn: " . $e->getMessage());
+    die("Error de conexi√≥n: " . $e->getMessage());
 }
 ?>
 <!DOCTYPE html>
@@ -234,13 +235,13 @@ try {
 
     <section class="hero">
         <div>
-            <h1>Tu prÛxima <span>moto</span> te espera</h1>
+            <h1>Tu pr√≥xima <span>moto</span> te espera</h1>
             <p>Las mejores marcas, los mejores precios, el mejor servicio</p>
-            <a href="#motos" class="btn">Ver Cat·logo</a>
+            <a href="#motos" class="btn">Ver Cat√°logo</a>
         </div>
     </section>
 
-    <!-- SECCI”N MOTOS -->
+    <!-- SECCI√ìN MOTOS -->
     <section class="seccion" id="motos">
         <h2>Nuestras Motos</h2>
         <div class="grid">
@@ -248,7 +249,7 @@ try {
             <div class="card">
                 <div class="card-img">?</div>
                 <div class="card-body">
-                    <div class="marca"><?= htmlspecialchars($moto['marca']) ?> ï <?= htmlspecialchars($moto['categoria']) ?></div>
+                    <div class="marca"><?= htmlspecialchars($moto['marca']) ?> ‚Ä¢ <?= htmlspecialchars($moto['categoria']) ?></div>
                     <h3><?= htmlspecialchars($moto['modelo']) ?> <?= $moto['anio'] ?></h3>
                     <p class="specs">
                         Cilindrada: <?= $moto['cilindrada'] ?>cc<br>
@@ -263,7 +264,7 @@ try {
         </div>
     </section>
 
-    <!-- SECCI”N REFACCIONES -->
+    <!-- SECCI√ìN REFACCIONES -->
     <section class="seccion" id="refacciones" style="background: #141414;">
         <h2>Refacciones y Accesorios</h2>
         <div class="grid">
@@ -282,7 +283,7 @@ try {
         </div>
     </section>
 
-    <!-- SECCI”N TALLER -->
+    <!-- SECCI√ìN TALLER -->
     <section class="seccion" id="taller">
         <h2>Servicios de Taller</h2>
         <div class="grid">
