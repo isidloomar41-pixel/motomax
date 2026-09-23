@@ -1,11 +1,12 @@
 <?php
 header('Content-Type: text/html; charset=utf-8');
 
-$host = 'localhost';
-$port = '5432';
-$dbname = 'db_mi_sitio_web';
-$user = 'usuario_sitio';
-$password = 'Omar2005';
+// ConexiÃ³n a la base de datos
+$host = getenv('PGHOST') ?: 'dpg-dapl2ns9v7es739087fg-a';
+$port = getenv('PGPORT') ?: '5432';
+$dbname = getenv('PGDATABASE') ?: 'db_mi_sitio_web';
+$user = getenv('PGUSER') ?: 'usuario_sitio';
+$password = getenv('PGPASSWORD') ?: 't8E11W1Pqb5hFwoLkzdZOXHzirB7cwbt';
 
 try {
     $pdo = new PDO("pgsql:host=$host;port=$port;dbname=$dbname", $user, $password);
@@ -35,7 +36,7 @@ try {
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$servicio_id, $nombre, $telefono, $moto, $fecha, $hora]);
         
-        $mensaje = "? ¡Cita agendada exitosamente! Te esperamos el $fecha a las $hora.";
+        $mensaje = "? Â¡Cita agendada exitosamente! Te esperamos el $fecha a las $hora.";
     }
     
 } catch (PDOException $e) {
@@ -123,7 +124,7 @@ try {
             <h2><?= htmlspecialchars($servicio['nombre']) ?></h2>
             <p><?= htmlspecialchars($servicio['descripcion']) ?></p>
             <div class="precio">$<?= number_format($servicio['precio'], 2) ?></div>
-            <p>Duración: <?= htmlspecialchars($servicio['duracion_aprox']) ?></p>
+            <p>DuraciÃ³n: <?= htmlspecialchars($servicio['duracion_aprox']) ?></p>
         </div>
         <form method="POST">
             <div class="form-group">
@@ -131,7 +132,7 @@ try {
                 <input type="text" name="nombre" required>
             </div>
             <div class="form-group">
-                <label>Teléfono *</label>
+                <label>TelÃ©fono *</label>
                 <input type="tel" name="telefono" required>
             </div>
             <div class="form-group">
