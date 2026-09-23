@@ -1,11 +1,12 @@
 <?php
 header('Content-Type: text/html; charset=utf-8');
 
-$host = 'localhost';
-$port = '5432';
-$dbname = 'db_mi_sitio_web';
-$user = 'usuario_sitio';
-$password = 'Omar2005';
+// Conexi贸n a la base de datos
+$host = getenv('PGHOST') ?: 'dpg-dapl2ns9v7es739087fg-a';
+$port = getenv('PGPORT') ?: '5432';
+$dbname = getenv('PGDATABASE') ?: 'db_mi_sitio_web';
+$user = getenv('PGUSER') ?: 'usuario_sitio';
+$password = getenv('PGPASSWORD') ?: 't8E11W1Pqb5hFwoLkzdZOXHzirB7cwbt';
 
 try {
     $pdo = new PDO("pgsql:host=$host;port=$port;dbname=$dbname", $user, $password);
@@ -18,7 +19,7 @@ try {
     $refaccion = $stmt->fetch(PDO::FETCH_ASSOC);
     
     if (!$refaccion) {
-        die("Refacci髇 no encontrada");
+        die("Refacci贸n no encontrada");
     }
     
     $mensaje = '';
@@ -34,7 +35,7 @@ try {
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$refaccion_id, $cantidad, $nombre, $telefono, $total]);
         
-        $mensaje = "? ompra de refacci髇 registrada! Total: $" . number_format($total, 2);
+        $mensaje = "? 隆Compra de refacci贸n registrada! Total: $" . number_format($total, 2);
         
         $pdo->prepare("UPDATE refacciones SET stock = stock - ? WHERE id = ?")->execute([$cantidad, $refaccion_id]);
     }
@@ -115,7 +116,7 @@ try {
 <body>
     <header><div class="logo">Moto<span>Max</span></div></header>
     <div class="container">
-        <h1>?? Comprar Refacci髇</h1>
+        <h1>?? Comprar Refacci贸n</h1>
         <?php if ($mensaje): ?>
             <div class="mensaje"><?= $mensaje ?></div>
             <a href="index.php" class="back">? Volver</a>
@@ -132,7 +133,7 @@ try {
                 <input type="text" name="nombre" required>
             </div>
             <div class="form-group">
-                <label>Tel閒ono *</label>
+                <label>Tel茅fono *</label>
                 <input type="tel" name="telefono" required>
             </div>
             <div class="form-group">
