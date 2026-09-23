@@ -1,12 +1,16 @@
 <?php
 header('Content-Type: text/html; charset=utf-8');
 
-// Conexión a la base de datos
-$host = 'dpg-dapl2ns9v7es739087fg-a.ondigitalocean.com';
-$port = '5432';
-$dbname = 'db_mi_sitio_web';
-$user = 'usuario_sitio';
-$password = 't8E11W1Pqb5hFwoLkzdZOXHzirB7cwbt';
+// Conexión a la base de datos usando URL completa
+$db_url = 'postgresql://usuario_sitio:t8E11W1Pqb5hFwoLkzdZOXHzirB7cwbt@dpg-dapl2ns9v7es739087fg-a:5432/db_mi_sitio_web';
+
+// Parsear la URL
+$parts = parse_url($db_url);
+$host = $parts['host'];
+$port = $parts['port'] ?? '5432';
+$dbname = ltrim($parts['path'], '/');
+$user = $parts['user'];
+$password = $parts['pass'];
 
 try {
     $pdo = new PDO("pgsql:host=$host;port=$port;dbname=$dbname", $user, $password);
